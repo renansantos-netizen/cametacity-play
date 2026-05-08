@@ -1,0 +1,3 @@
+body { margin: 0; overflow: hidden; background: #2c3e50; font-family: sans-serif; color: white; text-align: center; }
+#game-ui { position: absolute; width: 100%; top: 10px; pointer-events: none; }
+canvas { display: block; background: #34495e; }
