@@ -1,41 +1,53 @@
+const mapScreen = document.getElementById('map-screen');
+const gameScreen = document.getElementById('game-screen');
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-const scoreElement = document.getElementById('score');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let player = { x: 100, y: 300, width: 30, height: 50, speed: 4 };
+let gameActive = false;
 
-let score = 0;
-let target = { x: 100, y: 100, size: 40 };
-
-function drawTarget() {
-    ctx.fillStyle = '#27ae60'; // Cor da RiosNet
-    ctx.beginPath();
-    ctx.arc(target.x, target.y, target.size, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "white";
-    ctx.fillText("WI-FI", target.x - 15, target.y + 5);
+function startGame(local) {
+    document.getElementById('current-loc').innerText = local;
+    mapScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
+    canvas.width = 800;
+    canvas.height = 500;
+    gameActive = true;
+    runGame();
 }
 
-function moveTarget() {
-    target.x = Math.random() * (canvas.width - 100) + 50;
-    target.y = Math.random() * (canvas.height - 100) + 50;
+const keys = {};
+window.addEventListener('keydown', e => keys[e.key] = true);
+window.addEventListener('keyup', e => keys[e.key] = false);
+
+function update() {
+    if (keys['ArrowUp'] && player.y > 200) player.y -= player.speed;
+    if (keys['ArrowDown'] && player.y < 450) player.y += player.speed;
+    if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
+    if (keys['ArrowRight'] && player.x < 770) player.x += player.speed;
 }
 
-canvas.addEventListener('mousedown', (e) => {
-    const dist = Math.hypot(e.clientX - target.x, e.clientY - target.y);
-    if (dist < target.size) {
-        score++;
-        scoreElement.innerText = score;
-        moveTarget();
-    }
-});
-
-function animate() {
+function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTarget();
-    requestAnimationFrame(animate);
+    
+    // Desenha a calçada/rua de Cametá
+    ctx.fillStyle = "#808080"; 
+    ctx.fillRect(0, 200, canvas.width, 300);
+    
+    // Simulação de postes de rede (sua área de atuação)
+    ctx.fillStyle = "#444";
+    for(let i=0; i<canvas.width; i+=150) {
+        ctx.fillRect(i, 100, 10, 150);
+    }
+
+    // O Personagem (A pessoa que você conduz)
+    ctx.fillStyle = "#ffcc00";
+    ctx.fillRect(player.x, player.y, player.width, player.height);
 }
 
-moveTarget();
-animate();
+function runGame() {
+    if (!gameActive) return;
+    update();
+    draw();
+    requestAnimationFrame(runGame);
+}
