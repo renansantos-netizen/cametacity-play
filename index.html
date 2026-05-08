@@ -1,118 +1,18 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const tileW = 80;  
-const tileH = 40;  
-const mapSize = 10; 
-
-let originX = canvas.width / 2;
-let originY = canvas.height / 4;
-
-let player = { x: 0, y: 0 };
-
-const keys = {};
-window.addEventListener('keydown', e => {
-    keys[e.key] = true;
-    movePlayer(e.key);
-});
-window.addEventListener('keyup', e => keys[e.key] = false);
-
-function toIso(x, y) {
-    return {
-        screenX: originX + (x - y) * tileW / 2,
-        screenY: originY + (x + y) * tileH / 2
-    };
-}
-
-function drawTile(x, y, color, borderColor) {
-    const pos = toIso(x, y);
-    ctx.beginPath();
-    ctx.moveTo(pos.screenX, pos.screenY); 
-    ctx.lineTo(pos.screenX + tileW / 2, pos.screenY + tileH / 2); 
-    ctx.lineTo(pos.screenX, pos.screenY + tileH); 
-    ctx.lineTo(pos.screenX - tileW / 2, pos.screenY + tileH / 2); 
-    ctx.closePath();
-    
-    ctx.fillStyle = color;
-    ctx.fill();
-    ctx.strokeStyle = borderColor;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-}
-
-function drawBlock(x, y, heightScale, colorTop, colorLeft, colorRight) {
-    const pos = toIso(x, y);
-    const zOffset = heightScale * tileH;
-
-    ctx.beginPath();
-    ctx.moveTo(pos.screenX, pos.screenY - zOffset);
-    ctx.lineTo(pos.screenX + tileW / 2, pos.screenY + tileH / 2 - zOffset);
-    ctx.lineTo(pos.screenX, pos.screenY + tileH - zOffset);
-    ctx.lineTo(pos.screenX - tileW / 2, pos.screenY + tileH / 2 - zOffset);
-    ctx.closePath();
-    ctx.fillStyle = colorTop;
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.moveTo(pos.screenX - tileW / 2, pos.screenY + tileH / 2 - zOffset);
-    ctx.lineTo(pos.screenX, pos.screenY + tileH - zOffset);
-    ctx.lineTo(pos.screenX, pos.screenY + tileH);
-    ctx.lineTo(pos.screenX - tileW / 2, pos.screenY + tileH / 2);
-    ctx.closePath();
-    ctx.fillStyle = colorLeft;
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.moveTo(pos.screenX, pos.screenY + tileH - zOffset);
-    ctx.lineTo(pos.screenX + tileW / 2, pos.screenY + tileH / 2 - zOffset);
-    ctx.lineTo(pos.screenX + tileW / 2, pos.screenY + tileH / 2);
-    ctx.lineTo(pos.screenX, pos.screenY + tileH);
-    ctx.closePath();
-    ctx.fillStyle = colorRight;
-    ctx.fill();
-}
-
-function movePlayer(key) {
-    if (key === 'ArrowUp' && player.x > 0) player.x--;
-    if (key === 'ArrowDown' && player.x < mapSize - 1) player.x++;
-    if (key === 'ArrowLeft' && player.y > 0) player.y--;
-    if (key === 'ArrowRight' && player.y < mapSize - 1) player.y++;
-    
-    document.getElementById('coords').innerText = `Posição: X: ${player.x}, Y: ${player.y}`;
-}
-
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let x = 0; x < mapSize; x++) {
-        for (let y = 0; y < mapSize; y++) {
-            
-            drawTile(x, y, '#2ecc71', '#27ae60');
-
-            if (x === 4 && y === 4) {
-                drawBlock(x, y, 1.5, '#bdc3c7', '#95a5a6', '#7f8c8d');
-            }
-
-            if (player.x === x && player.y === y) {
-                drawBlock(x, y, 1, '#3498db', '#2980b9', '#1f618d');
-            }
-        }
-    }
-}
-
-function runGame() {
-    draw();
-    requestAnimationFrame(runGame);
-}
-
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    originX = canvas.width / 2;
-    originY = canvas.height / 4;
-});
-
-runGame();
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cametá Isométrico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ui-container">
+        <h1>Cametá Urban Builder</h1>
+        <p>Use as <b>Setas</b> para mover o bloco azul.</p>
+        <div id="coords">Explorando Cametá...</div>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+    <script src="script.js"></script>
+</body>
+</html>
