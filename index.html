@@ -1,31 +1,19 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cametá Urban Explorer</title>
+    <title>Cametá Isométrico</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="map-screen">
-        <div class="header-container">
-            <h1>Cametá Urban Explorer</h1>
-            <p>Escolha seu ponto de partida</p>
-        </div>
-        <div class="map-container">
-            <button class="loc-btn" onclick="startGame('Orla de Cametá')">Orla de Cametá</button>
-            <button class="loc-btn" onclick="startGame('Centro Histórico')">Centro Histórico</button>
-            <button class="loc-btn" onclick="startGame('Bairro da Aldeia')">Bairro da Aldeia</button>
-        </div>
+    <div id="ui-container">
+        <h1>Cametá Isométrico</h1>
+        <p>Use as <b>Setas do Teclado</b> para explorar as ruas.</p>
+        <div id="coords">Posição: X: 0, Y: 0</div>
     </div>
-
-    <div id="game-screen" class="hidden">
-        <div id="ui">
-            Explorando: <span id="current-loc"></span>
-            <button onclick="location.reload()" id="back-btn">Voltar ao Mapa</button>
-        </div>
-        <canvas id="gameCanvas"></canvas>
-    </div>
+    
+    <canvas id="gameCanvas"></canvas>
 
     <script src="script.js"></script>
 </body>
