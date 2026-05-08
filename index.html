@@ -2,14 +2,26 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Meu Primeiro Jogo</title>
+    <title>Cametá Explorer</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Pontos: <span id="score">0</span></h1>
-    <div id="game-container">
-        <div id="target"></div>
+    <!-- Tela de Seleção de Fase -->
+    <div id="map-screen">
+        <h1>Selecione onde iniciar em Cametá</h1>
+        <div class="map-container">
+            <button class="loc" onclick="startGame('Centro')">Centro</button>
+            <button class="loc" onclick="startGame('Vila Apeí')">Vila Apeí</button>
+            <button class="loc" onclick="startGame('Aldeia')">Aldeia</button>
+        </div>
     </div>
+
+    <!-- Tela do Jogo -->
+    <div id="game-screen" class="hidden">
+        <div id="ui">Local: <span id="current-loc"></span></div>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
