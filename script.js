@@ -1,39 +1,59 @@
-/* script.js - Cenário Melhorado */
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const scoreElement = document.getElementById('score');
 const mapScreen = document.getElementById('map-screen');
 const gameScreen = document.getElementById('game-screen');
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// Configurações do personagem
+let player = { x: 100, y: 300, width: 30, height: 50, speed: 5 };
+let gameActive = false;
 
-let score = 0;
-let target = { x: 100, y: 100, size: 40 };
+// Ajusta o tamanho da tela do jogo
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
 
-// Pontos de partida válidos apenas para a área urbana de Cametá
-const points = ['Orla de Cametá', 'Centro Histórico', 'Bairro da Aldeia'];
-
-function drawTarget() {
-    ctx.fillStyle = '#27ae60'; // Cor da RiosNet
-    ctx.beginPath();
-    ctx.arc(target.x, target.y, target.size, 0, Math.PI * 2);
-    ctx.fill();
+// --- ESSA É A FUNÇÃO QUE O BOTÃO CHAMA ---
+function startGame(local) {
+    // Esconde o menu e mostra o jogo
+    mapScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
     
-    // Texto Wi-Fi com melhor contraste
-    ctx.font = '20px Arial';
-    ctx.fillStyle = "white";
-    ctx.textAlign = 'center';
-    ctx.fillText("WI-FI", target.x, target.y + 7);
+    // Atualiza o nome do local na tela
+    document.getElementById('current-loc').innerText = local;
+    
+    resizeCanvas();
+    
+    // Garante que o jogador comece no lugar certo na calçada
+    player.y = canvas.height * 0.7;
+    player.x = 100;
+    
+    gameActive = true;
+    runGame();
 }
 
-function moveTarget() {
-    target.x = Math.random() * (canvas.width - 100) + 50;
-    target.y = Math.random() * (canvas.height - 100) + 50;
+// Verifica quais teclas estão sendo apertadas
+const keys = {};
+window.addEventListener('keydown', e => keys[e.key] = true);
+window.addEventListener('keyup', e => keys[e.key] = false);
+
+// Movimenta o personagem
+function update() {
+    const calcadaTop = canvas.height * 0.6;
+    const calcadaBottom = canvas.height - player.height;
+
+    // Impede que ele saia da calçada e da tela
+    if (keys['ArrowUp'] && player.y > calcadaTop) player.y -= player.speed;
+    if (keys['ArrowDown'] && player.y < calcadaBottom) player.y += player.speed;
+    if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
+    if (keys['ArrowRight'] && player.x < canvas.width - player.width) player.x += player.speed;
 }
 
-// Função para desenhar o cenário urbano de Cametá
-function drawScenario() {
+// Desenha a tela toda
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
     // Fundo - O Céu
     ctx.fillStyle = '#87CEEB';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -46,44 +66,42 @@ function drawScenario() {
     ctx.fillStyle = "#808080"; 
     ctx.fillRect(0, canvas.height * 0.6, canvas.width, canvas.height * 0.4);
 
-    // Postes de rede (sua área de atuação)
+    // Postes de rede de internet
     ctx.fillStyle = "#444";
-    for(let i=0; i<canvas.width; i+=150) {
-        ctx.fillRect(i, canvas.height * 0.35, 10, canvas.height * 0.35);
+    for(let i = 0; i < canvas.width; i += 250) {
+        ctx.fillRect(i, canvas.height * 0.35, 12, canvas.height * 0.25);
+        // Fio de fibra óptica
+        ctx.beginPath();
+        ctx.moveTo(i, canvas.height * 0.35);
+        ctx.lineTo(i + 250, canvas.height * 0.35);
+        ctx.strokeStyle = "#222";
+        ctx.lineWidth = 2;
+        ctx.stroke();
     }
     
-    // Algumas árvores simplificadas para embelezar
-    ctx.fillStyle = '#228B22';
-    for(let i=75; i<canvas.width; i+=200) {
+    // Algumas árvores simplificadas na margem do rio
+    for(let i = 120; i < canvas.width; i += 250) {
+        // Folhas
+        ctx.fillStyle = '#228B22';
         ctx.beginPath();
         ctx.arc(i, canvas.height * 0.55, 30, 0, Math.PI * 2);
         ctx.fill();
+        // Tronco
+        ctx.fillStyle = '#8B4513';
+        ctx.fillRect(i - 5, canvas.height * 0.55 + 20, 10, 25);
     }
+
+    // O Personagem (Você)
+    ctx.fillStyle = "#ffcc00"; 
+    ctx.fillRect(player.x, player.y, player.width, player.height);
 }
 
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawScenario(); // Desenha o cenário primeiro
-    drawTarget();   // Desenha o alvo por cima
-    requestAnimationFrame(animate);
-}
-
-canvas.addEventListener('mousedown', (e) => {
-    const dist = Math.hypot(e.clientX - target.x, e.clientY - target.y);
-    if (dist < target.size) {
-        score++;
-        scoreElement.innerText = score;
-        moveTarget();
-    }
-});
-
-// Nova função para iniciar o jogo escolhendo a fase
-function startGame(local) {
-    if (points.includes(local)) {
-        console.log(`Iniciando jogo em: ${local}`);
-        mapScreen.classList.add('hidden');
-        gameScreen.classList.remove('hidden');
-        moveTarget();
-        animate();
-    }
+// Roda o jogo de forma contínua
+function runGame() {
+    if (!gameActive) return;
+    
+    update();
+    draw();
+    
+    requestAnimationFrame(runGame);
 }
