@@ -1,41 +1,9 @@
-body {
-    margin: 0;
-    overflow: hidden;
-    background-color: #1a252c; /* Cor de fundo escura */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
-}
-
+body { margin: 0; overflow: hidden; background-color: #1a252c; font-family: sans-serif; color: white; }
 #ui-container {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px 25px;
-    border-radius: 10px;
-    border-left: 4px solid #f39c12;
-    z-index: 10;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    position: absolute; top: 20px; left: 20px; z-index: 10;
+    background: rgba(0, 0, 0, 0.8); padding: 15px; border-radius: 10px;
+    border-left: 5px solid #f39c12; pointer-events: none;
 }
-
-h1 {
-    margin: 0 0 10px 0;
-    font-size: 1.5rem;
-    color: #f39c12;
-}
-
-p {
-    margin: 0 0 10px 0;
-    font-size: 0.9rem;
-    color: #ccc;
-}
-
-#coords {
-    font-family: monospace;
-    font-size: 1.1rem;
-    color: #3498db;
-}
-
-canvas {
-    display: block;
-}
+h1 { margin: 0; color: #f39c12; font-size: 1.2rem; }
+#coords { color: #3498db; font-weight: bold; margin-top: 5px; }
+canvas { display: block; width: 100vw; height: 100vh; }
