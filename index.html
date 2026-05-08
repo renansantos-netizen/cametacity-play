@@ -2,24 +2,23 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cametá Explorer</title>
+    <title>Cametá Urban Explorer</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Tela de Seleção de Fase -->
     <div id="map-screen">
-        <h1>Selecione onde iniciar em Cametá</h1>
+        <h1>Cametá: Escolha o Ponto de Partida</h1>
         <div class="map-container">
-            <button class="loc" onclick="startGame('Centro')">Centro</button>
-            <button class="loc" onclick="startGame('Vila Apeí')">Vila Apeí</button>
-            <button class="loc" onclick="startGame('Aldeia')">Aldeia</button>
+            <button class="loc-btn" onclick="startGame('Orla de Cametá')">Orla de Cametá</button>
+            <button class="loc-btn" onclick="startGame('Centro Histórico')">Centro Histórico</button>
+            <button class="loc-btn" onclick="startGame('Bairro da Aldeia')">Bairro da Aldeia</button>
         </div>
     </div>
 
-    <!-- Tela do Jogo -->
     <div id="game-screen" class="hidden">
-        <div id="ui">Local: <span id="current-loc"></span></div>
+        <div id="ui">Explorando: <span id="current-loc"></span></div>
         <canvas id="gameCanvas"></canvas>
+        <button onclick="location.reload()" id="back-btn">Voltar ao Mapa</button>
     </div>
 
     <script src="script.js"></script>
