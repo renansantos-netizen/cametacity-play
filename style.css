@@ -1,3 +1,12 @@
-body { margin: 0; overflow: hidden; background: #2c3e50; font-family: sans-serif; color: white; text-align: center; }
-#game-ui { position: absolute; width: 100%; top: 10px; pointer-events: none; }
-canvas { display: block; background: #34495e; }
+body { margin: 0; background: #1a1a1a; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+#map-screen { text-align: center; padding: 50px; }
+.map-container { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+.loc-btn { 
+    padding: 15px 30px; font-size: 1.2rem; cursor: pointer; 
+    background: #004a99; border: none; color: white; border-radius: 8px; width: 300px;
+}
+.loc-btn:hover { background: #0066cc; }
+.hidden { display: none; }
+canvas { display: block; background: #333; margin: 0 auto; border: 2px solid #004a99; }
+#ui { position: absolute; top: 20px; left: 20px; font-weight: bold; }
+#back-btn { position: absolute; bottom: 20px; left: 20px; padding: 10px; cursor: pointer; }
