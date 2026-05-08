@@ -46,8 +46,10 @@ function draw() {
 }
 
 function runGame() {
-    if (!gameActive) return;
-    update();
-    draw();
-    requestAnimationFrame(runGame);
+    if (!gameActive) return; // Para o jogo se não estiver ativo [cite: 10]
+    update(); // Processa os movimentos das setas [cite: 13]
+    draw();   // Desenha o cenário e o personagem [cite: 16, 20]
+    
+    // Essencial para criar o movimento contínuo
+    requestAnimationFrame(runGame); 
 }
