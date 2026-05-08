@@ -2,25 +2,28 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cametá Urban Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cametá City Play - Edição Bonita</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="game-ui">
+        <h1>Conectando Cametá</h1>
+        <p>Pontos: <span id="score">0</span></p>
+    </div>
+    
     <div id="map-screen">
-        <h1>Cametá: Escolha o Ponto de Partida</h1>
+        <h2>Selecione onde iniciar em Cametá</h2>
         <div class="map-container">
-            <button class="loc-btn" onclick="startGame('Orla de Cametá')">Orla de Cametá</button>
-            <button class="loc-btn" onclick="startGame('Centro Histórico')">Centro Histórico</button>
-            <button class="loc-btn" onclick="startGame('Bairro da Aldeia')">Bairro da Aldeia</button>
+            <button class="loc" onclick="startGame('Orla de Cametá')">Orla de Cametá</button>
+            <button class="loc" onclick="startGame('Centro Histórico')">Centro Histórico</button>
+            <button class="loc" onclick="startGame('Bairro da Aldeia')">Bairro da Aldeia</button>
         </div>
     </div>
 
     <div id="game-screen" class="hidden">
-        <div id="ui">Explorando: <span id="current-loc"></span></div>
         <canvas id="gameCanvas"></canvas>
-        <button onclick="location.reload()" id="back-btn">Voltar ao Mapa</button>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
